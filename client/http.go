@@ -90,8 +90,7 @@ func (c *Client) get(ctx context.Context, uri string, queryParams map[string]str
 	// Send request
 	resp, err := c.HTTP.Do(request)
 	if err != nil {
-		closeResponseBody(resp)
-		return nil, err
+		return nil, closeResponseBody(resp)
 	}
 	if resp == nil {
 		return nil, nil
@@ -115,8 +114,7 @@ func (c *Client) post(ctx context.Context, uri string, queryBody any) (*http.Res
 	// Send request
 	resp, err := c.HTTP.Do(request)
 	if err != nil {
-		closeResponseBody(resp)
-		return nil, err
+		return nil, closeResponseBody(resp)
 	}
 
 	return resp, nil

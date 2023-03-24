@@ -33,7 +33,7 @@ func TestBuildHTTPRequest(t *testing.T) {
 		queryParams: nil,
 		queryBody:   nil,
 	}
-	req, err := c.buildHTTPRequest(reqOptWithNil)
+	_, err := c.buildHTTPRequest(reqOptWithNil)
 	assert.NoError(t, err, "No error during building request with nil body and paramas")
 	assert.Nil(t, err)
 
@@ -46,7 +46,7 @@ func TestBuildHTTPRequest(t *testing.T) {
 		},
 		queryBody: nil,
 	}
-	req, err = c.buildHTTPRequest(reqOptWithParams)
+	_, err = c.buildHTTPRequest(reqOptWithParams)
 	assert.NoError(t, err, "No error during building request with query param")
 	assert.Nil(t, err)
 
@@ -64,7 +64,7 @@ func TestBuildHTTPRequest(t *testing.T) {
 			"acl_tags":   []string{"tag1", "tag2"},
 		},
 	}
-	req, err = c.buildHTTPRequest(reqOptWithBody)
+	req, err := c.buildHTTPRequest(reqOptWithBody)
 	assert.NoError(t, err, "No error during building request with query param")
 	assert.Nil(t, err)
 

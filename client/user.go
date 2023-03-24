@@ -62,6 +62,9 @@ func checkUsersList(response *http.Response) (users []UserConfig, err error) {
 // GetUser : return a Headscale user and its status
 func (c *Client) GetUser(ctx context.Context, name string) (status UserStatus, user UserConfig, err error) {
 	resp, err := c.get(ctx, "/user/"+name, nil)
+	if err != nil {
+		return UserError, UserConfig{}, err
+	}
 	return checkUserGetStatus(resp)
 }
 
@@ -109,8 +112,10 @@ func checkUserCreationStatus(response *http.Response) (UserStatus, UserConfig, e
 	case http.StatusOK:
 		var userCreationResponse UserCreationResponse
 		err = json.Unmarshal(body, &userCreationResponse)
-		user := userCreationResponse.User
-		return UserCreated, user, nil
+		if err != nil {
+			return UserError, UserConfig{}, err
+		}
+		return UserCreated, userCreationResponse.User, nil
 	case http.StatusInternalServerError:
 		isMessageUserAlreadyExists := strings.Contains(string(body), "User already exists")
 		if isMessageUserAlreadyExists {

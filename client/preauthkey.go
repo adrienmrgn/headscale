@@ -81,14 +81,12 @@ func (c *Client) CreatePreAuthKey(ctx context.Context, preAuthKeyConfig PreAuthK
 }
 
 func buildPreAuthKeyRequestBody(preAuthKeyConfig PreAuthKeyConfig) map[string]any {
-	var requestBody map[string]any
-	requestBody = make(map[string]any)
+	var requestBody map[string]any = make(map[string]any)
 	if !preAuthKeyConfig.Expiration.IsZero() {
 		requestBody["expiration"] = timestampToProtobufTimestamp(preAuthKeyConfig.Expiration)
 	}
 	if len(preAuthKeyConfig.Tags) != 0 {
-		var formatedTags []string
-		formatedTags = make([]string, len(preAuthKeyConfig.Tags))
+		var formatedTags []string = make([]string, len(preAuthKeyConfig.Tags))
 		for i, tag := range preAuthKeyConfig.Tags {
 			formatedTags[i] = "tag:" + strings.ToLower(tag)
 		}
