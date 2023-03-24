@@ -28,7 +28,7 @@ type UserConfig struct {
 	CreatedAt time.Time `json:"createdAt"`
 }
 
-type UserCreationResponse struct{
+type UserCreationResponse struct {
 	User UserConfig `json:"user"`
 }
 

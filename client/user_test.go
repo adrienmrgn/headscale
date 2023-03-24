@@ -9,7 +9,7 @@ import (
 
 func TestCreateUser(t *testing.T) {
 
-	client, container, err  := runHeadscale()
+	client, container, err := runHeadscale()
 	defer container.Terminate()
 	userName := "foo"
 	userStatus, _, err := client.CreateUser(container.Context, userName)
@@ -27,9 +27,8 @@ func TestCreateUser(t *testing.T) {
 	assert.Contains(t, expectedUserStatus, userStatus)
 }
 
-
 func TestDeleteUser(t *testing.T) {
-	client, container, err  := runHeadscale()
+	client, container, err := runHeadscale()
 	defer container.Terminate()
 	userName := "bar"
 	userStatus, _, _ := client.CreateUser(context.Background(), userName)

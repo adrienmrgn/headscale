@@ -12,10 +12,10 @@ import (
 
 func TestCreatePreAuthKey(t *testing.T) {
 
-	client, container, err  := runHeadscale()
+	client, container, err := runHeadscale()
 	defer container.Terminate()
 	assert.NoError(t, err)
-	
+
 	existingUserName := "bar"
 	nonExistingUserName := "baz"
 	client.CreateUser(context.Background(), existingUserName)
