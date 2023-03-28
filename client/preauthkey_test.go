@@ -3,15 +3,12 @@ package client
 import (
 	"context"
 	"time"
-
-	// "fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestCreatePreAuthKey(t *testing.T) {
-
 
 	existingUserName := "bar"
 	nonExistingUserName := "baz"
@@ -62,7 +59,7 @@ func TestCreatePreAuthKey(t *testing.T) {
 	}
 }
 
-func TestUnauthorizedWithPreauthkey(t *testing.T){
+func TestUnauthorizedWithPreauthkey(t *testing.T) {
 	testData.client.APIKey = "wrongkey"
 	userName := "bar"
 	pakConfig := PreAuthKeyConfig{

@@ -78,6 +78,9 @@ func checkUserGetStatus(response *http.Response) (status UserStatus, user UserCo
 	case http.StatusOK:
 		var userCreationResponse UserCreationResponse
 		err = json.Unmarshal(body, &userCreationResponse)
+		if err != nil {
+			return UserError, UserConfig{}, err
+		}
 		user = userCreationResponse.User
 		return UserExists, user, nil
 	case http.StatusInternalServerError:
@@ -154,7 +157,7 @@ func checkUserDeletionStatus(response *http.Response) (status UserStatus, err er
 		if err != nil {
 			return UserError, err
 		}
-				
+
 		IsMessageUnauthorized := strings.Contains(string(body), "Unauthorized")
 		if IsMessageUnauthorized {
 			return UserError, ErrUnauthorized

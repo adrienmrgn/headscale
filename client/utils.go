@@ -106,6 +106,9 @@ func runHeadscale() (client *Client, container testContainer, err error) {
 		Command:          []string{"headscale", "serve"},
 	}
 	container, err = runTestContainer(headscale)
+	if err != nil {
+		return nil, testContainer{}, err
+	}
 	client = NewClient()
 	client.APIURL = container.URI
 	client.APIKey, err = retrieveHeadscaleConfigFromContainer(headscale.Name)
