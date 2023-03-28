@@ -78,6 +78,9 @@ func checkUserGetStatus(response *http.Response) (status UserStatus, user UserCo
 	case http.StatusOK:
 		var userCreationResponse UserCreationResponse
 		err = json.Unmarshal(body, &userCreationResponse)
+		if err != nil {
+			return UserError, UserConfig{}, err
+		}
 		user = userCreationResponse.User
 		return UserExists, user, nil
 	case http.StatusInternalServerError:
