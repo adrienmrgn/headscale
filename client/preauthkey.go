@@ -110,6 +110,11 @@ func checkPreAuthKeyCreationStatus(response *http.Response) (status PreAuthKeySt
 		if err != nil {
 			return PreAuthKeyError, err
 		}
+		
+		IsMessageUnauthorized := strings.Contains(string(body), "Unauthorized")
+		if IsMessageUnauthorized {
+			return PreAuthKeyError, ErrUnauthorized
+		}
 		isMessageUserNotFound := strings.Contains(string(body), "User not found")
 		if isMessageUserNotFound {
 			return PreAuthKeyError, ErrUserNotFound

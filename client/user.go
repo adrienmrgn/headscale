@@ -81,6 +81,10 @@ func checkUserGetStatus(response *http.Response) (status UserStatus, user UserCo
 		user = userCreationResponse.User
 		return UserExists, user, nil
 	case http.StatusInternalServerError:
+		IsMessageUnauthorized := strings.Contains(string(body), "Unauthorized")
+		if IsMessageUnauthorized {
+			return UserError, UserConfig{}, ErrUnauthorized
+		}
 		isMessageUserAlreadyExists := strings.Contains(string(body), "User already exists")
 		if isMessageUserAlreadyExists {
 			return UserExists, UserConfig{}, nil
@@ -117,6 +121,10 @@ func checkUserCreationStatus(response *http.Response) (UserStatus, UserConfig, e
 		}
 		return UserCreated, userCreationResponse.User, nil
 	case http.StatusInternalServerError:
+		IsMessageUnauthorized := strings.Contains(string(body), "Unauthorized")
+		if IsMessageUnauthorized {
+			return UserError, UserConfig{}, ErrUnauthorized
+		}
 		isMessageUserAlreadyExists := strings.Contains(string(body), "User already exists")
 		if isMessageUserAlreadyExists {
 			return UserExists, UserConfig{}, nil
@@ -146,6 +154,12 @@ func checkUserDeletionStatus(response *http.Response) (status UserStatus, err er
 		if err != nil {
 			return UserError, err
 		}
+				
+		IsMessageUnauthorized := strings.Contains(string(body), "Unauthorized")
+		if IsMessageUnauthorized {
+			return UserError, ErrUnauthorized
+		}
+
 		isMessageUserNotFound := strings.Contains(string(body), "User not found")
 		if isMessageUserNotFound {
 			return UserUnknown, ErrUserNotFound
