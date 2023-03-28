@@ -12,14 +12,11 @@ import (
 
 func TestCreatePreAuthKey(t *testing.T) {
 
-	client, container, err := runHeadscale()
-	defer container.Terminate()
-	assert.NoError(t, err)
 
 	existingUserName := "bar"
 	nonExistingUserName := "baz"
-	client.CreateUser(context.Background(), existingUserName)
-	client.DeleteUser(context.Background(), nonExistingUserName)
+	testData.client.CreateUser(context.Background(), existingUserName)
+	testData.client.DeleteUser(context.Background(), nonExistingUserName)
 	testCases := []struct {
 		pakConfig            PreAuthKeyConfig
 		name                 string
@@ -58,9 +55,19 @@ func TestCreatePreAuthKey(t *testing.T) {
 	for _, tc := range testCases {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
-			preAuthKeyStatus, _, err := client.CreatePreAuthKey(context.Background(), tc.pakConfig)
+			preAuthKeyStatus, _, err := testData.client.CreatePreAuthKey(context.Background(), tc.pakConfig)
 			assert.ErrorIs(t, err, tc.wantError)
 			assert.Equal(t, tc.wantPreAuthKeyStatus, preAuthKeyStatus)
 		})
 	}
+}
+
+func TestUnauthorizedWithPreauthkey(t *testing.T){
+	testData.client.APIKey = "wrongkey"
+	userName := "bar"
+	pakConfig := PreAuthKeyConfig{
+		User: userName,
+	}
+	_, _, err := testData.client.CreatePreAuthKey(context.Background(), pakConfig)
+	assert.ErrorIs(t, err, ErrUnauthorized)
 }
