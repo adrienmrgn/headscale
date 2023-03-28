@@ -9,11 +9,11 @@ import (
 )
 
 var testData struct {
-	client *Client 
+	client    *Client
 	container testContainer
 }
 
-func TestMain(m *testing.M){
+func TestMain(m *testing.M) {
 
 	testData.client, testData.container, _ = runHeadscale()
 
@@ -43,7 +43,7 @@ func TestCreateUser(t *testing.T) {
 }
 
 func TestDeleteUser(t *testing.T) {
-	
+
 	userName := "bar"
 	userStatus, _, _ := testData.client.CreateUser(testData.container.Context, userName)
 	expectedUserStatus := []UserStatus{
@@ -65,8 +65,8 @@ func TestDeleteUser(t *testing.T) {
 	assert.Contains(t, expectedUserStatus, userStatus)
 }
 
-func TestUnauthorized(t *testing.T){
-	
+func TestUnauthorized(t *testing.T) {
+
 	testData.client.APIKey = "wrongkey"
 	userName := "bar"
 	_, _, err := testData.client.CreateUser(context.Background(), userName)

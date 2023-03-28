@@ -154,7 +154,7 @@ func checkUserDeletionStatus(response *http.Response) (status UserStatus, err er
 		if err != nil {
 			return UserError, err
 		}
-				
+
 		IsMessageUnauthorized := strings.Contains(string(body), "Unauthorized")
 		if IsMessageUnauthorized {
 			return UserError, ErrUnauthorized
